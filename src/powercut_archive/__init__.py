@@ -1,0 +1,1 @@
+"""GB power cut archive."""
