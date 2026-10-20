@@ -19,6 +19,7 @@ def make_record(**overrides) -> OutageRecord:
         category="HV OVERHEAD",
         voltage="HV",
         customers_off=309,
+        customers_predicted_off=12,
         customers_restored=0,
         reported_at=datetime(2026, 10, 19, 12, 2, tzinfo=UTC),
         etr=datetime(2026, 10, 19, 15, 0, tzinfo=UTC),
@@ -52,7 +53,9 @@ def test_record_is_immutable():
         record.customers_off = 0
 
 
-@pytest.mark.parametrize("field_name", ["customers_off", "customers_restored"])
+@pytest.mark.parametrize(
+    "field_name", ["customers_off", "customers_predicted_off", "customers_restored"]
+)
 def test_negative_customer_counts_are_rejected(field_name):
     with pytest.raises(ValueError, match="negative"):
         make_record(**{field_name: -1})
@@ -73,6 +76,7 @@ def test_optional_fields_can_be_missing():
         status=Status.UNKNOWN,
     )
     assert record.etr is None
+    assert record.customers_predicted_off is None
     assert record.raw == {}
 
 

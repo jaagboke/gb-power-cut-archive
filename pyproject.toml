@@ -8,7 +8,8 @@ version = "0.1.0"
 description = "Archives GB DNO live power cut feeds into a cross-DNO outage history."
 readme = "README.md"
 requires-python = ">=3.11"
-dependencies = []
+# tzdata: Windows has no system time zone database for zoneinfo
+dependencies = ["tzdata"]
 
 [project.optional-dependencies]
 dev = ["pytest>=8"]

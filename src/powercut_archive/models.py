@@ -35,6 +35,10 @@ class OutageRecord:
     category: str | None = None
     voltage: str | None = None
     customers_off: int | None = None
+    # The DNO's estimate of further customers likely affected but not yet
+    # confirmed. Kept apart from customers_off so the confirmed count stays
+    # comparable across DNOs.
+    customers_predicted_off: int | None = None
     customers_restored: int | None = None
     reported_at: datetime | None = None
     etr: datetime | None = None
@@ -67,7 +71,7 @@ class OutageRecord:
             if value.utcoffset() != timedelta(0):
                 raise ValueError(f"{name} must be in UTC, got offset {value.utcoffset()}")
 
-        for name in ("customers_off", "customers_restored"):
+        for name in ("customers_off", "customers_predicted_off", "customers_restored"):
             value = getattr(self, name)
             if value is not None and value < 0:
                 raise ValueError(f"{name} must not be negative, got {value}")
